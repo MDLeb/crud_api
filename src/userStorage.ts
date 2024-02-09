@@ -1,6 +1,4 @@
-import os from 'node:os';
-import uuid from 'uuid';
-
+//TODO make it internal type
 type User = {
     id: string,
     username: string,
@@ -30,6 +28,18 @@ class UserStorage {
         if(userIndex >= 0) {
             Object.assign(this.#USERS[userIndex], userProps);
             return this.#USERS[userIndex];
+        } else {
+            return false;
+        }
+    }
+
+    deleteUser = (id: string) => {
+
+        let userIndex = this.#getUserIndexById(id);
+
+        if(userIndex >= 0) {
+            this.#USERS.splice(userIndex, 1);
+            return true;
         } else {
             return false;
         }
