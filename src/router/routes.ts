@@ -1,13 +1,13 @@
 import { ACTIONS } from './actions'
 
-export const ROUTES: { [key: string]: { [key: string]: Function } } = {
-    '^/users/[\\w-]+$': {
-        'GET': ACTIONS.getUserById,
-        'POST': ACTIONS.addUser,
-        'PUT': ACTIONS.updateUserById,
-        'DELETE': ACTIONS.deleteUser
+export const ROUTES: { [key: string]: { [key: string]: {'action': Function, 'signature': String[]} } } = {
+    '^/users/[\\w-]+/?$': {
+        'GET': { action: ACTIONS.getUserById, signature: ['id'] },
+        'PUT': { action: ACTIONS.updateUserById, signature: ['id', 'data'] },
+        'DELETE': { action: ACTIONS.deleteUser, signature: ['id'] }
     },
-    '^/users$': {
-        'GET': ACTIONS.getAllUsers
+    '^/users/?$': {
+        'GET': { action: ACTIONS.getAllUsers, signature: [] },
+        'POST': { action: ACTIONS.addUser, signature: ['data'] }
     },
 };

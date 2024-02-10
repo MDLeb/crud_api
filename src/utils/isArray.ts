@@ -1,0 +1,1 @@
+export const isArray = (value: any) => Array.isArray(value) 

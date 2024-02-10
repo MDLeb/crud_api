@@ -1,15 +1,23 @@
 import { ROUTES } from './routes'
+import * as nodePath from 'node:path';
 
-export const router = (path: string | undefined, method: string | undefined) => {
-    console.log(path);
-    let action: Function | undefined = undefined;;
+export const router = (path: string | undefined, method: string | undefined, data: any) => {
+
+    let action: Function | undefined = undefined;
+    let signature: String[] = [];
+
+    //FIXME
+    let params = nodePath.parse(path as string).base;
+    console.log(params);
+    
 
     for (const route in ROUTES) {
         const regex = new RegExp(route);
         if (regex.test(path || '')) {
             const routeObject = ROUTES[route];
             if (method && routeObject.hasOwnProperty(method)) {
-                action = routeObject[method];
+                let existingRoute = routeObject[method];
+                existingRoute && (action = existingRoute['action'], signature = existingRoute['signature']);
                 break;
             }
         }
@@ -21,11 +29,11 @@ export const router = (path: string | undefined, method: string | undefined) => 
             body: JSON.stringify({ error: 'Not Found' }),
         };
     } else {
-        return {
-            status: 200,
-            header: 'Content-Type: application/json',
-            body: JSON.stringify({ msg: 'Works' }),
-        }
+        console.log(signature);
+        return action(...signature.map(i => {
+           if(i === 'id') return params;
+           if(i === 'data') return data;
+        }))
     }
 
 }

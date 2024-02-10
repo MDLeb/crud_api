@@ -1,10 +1,4 @@
-//TODO make it internal type
-type User = {
-    id: string,
-    username: string,
-    age: number,
-    hobbies: string[]
-}
+import { User } from './types';
 
 class UserStorage {
     #USERS: User[] = [];
@@ -15,7 +9,10 @@ class UserStorage {
         return userIndex;
     };
 
-    addUser = (user: User) => this.#USERS.push(user);
+    addUser = (user: User) => {
+        this.#USERS.push(user);
+        return user;
+    };
 
     getAllUsers = () => this.#USERS;
 
