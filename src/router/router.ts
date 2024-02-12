@@ -6,10 +6,7 @@ export const router = (path: string | undefined, method: string | undefined, dat
     let action: Function | undefined = undefined;
     let signature: String[] = [];
 
-    //FIXME
     let params = nodePath.parse(path as string).base;
-    console.log(params);
-    
 
     for (const route in ROUTES) {
         const regex = new RegExp(route);
@@ -29,7 +26,7 @@ export const router = (path: string | undefined, method: string | undefined, dat
             body: JSON.stringify({ error: 'Not Found' }),
         };
     } else {
-        console.log(signature);
+        console.log(action);
         return action(...signature.map(i => {
            if(i === 'id') return params;
            if(i === 'data') return data;

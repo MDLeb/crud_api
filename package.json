@@ -4,7 +4,10 @@
   "description": "crud_api",
   "main": "src/index.ts",
   "scripts": {
-    "start": "npx nodemon src/index.ts",
+    "start:dev": "npx nodemon src/index.ts",
+    "start:multi": "npx nodemon src/index.ts --MULTI_SERVER=true",
+    "start:prod": "tsc && node dist/index.js",
+    "start:multi:prod": "tsc && node dist/index.js --MULTI_SERVER=true",
     "format": "prettier --write \"src//*.ts\"",
     "lint": "eslint \"src//*.ts\" --fix"
   },
