@@ -23,7 +23,7 @@ export const router = (path: string | undefined, method: string | undefined, dat
         return {
             status: 404,
             header: 'Content-Type: application/json',
-            body: JSON.stringify({ error: 'Not Found' }),
+            body: JSON.stringify({ error: 'Not Found, incorrect url' }),
         };
     } else {
         return action(...signature.map(i => {

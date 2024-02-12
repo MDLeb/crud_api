@@ -5,10 +5,14 @@ import { isUUID } from '../utils/isUUID';
 import { isNumber } from '../utils/isNumber';
 import { isString } from '../utils/isString';
 import { isArrayOfStrings } from '../utils/isArrayOfStrings';
+import { isObject } from '../utils/isObject';
 
 
 export const ACTIONS: { [fn: string]: Function } = {
     'getAllUsers': async () => {
+        //test Server Error
+        // throw new Error();
+
         const users = await userStorage.getAllUsers();
         return {
             status: 200,
@@ -46,6 +50,13 @@ export const ACTIONS: { [fn: string]: Function } = {
                 status: 400,
                 header: 'Content-Type: application/json',
                 body: JSON.stringify({ message: 'id is invalid (not uuid)' }),
+            }
+        }
+        if(!isObject(userProps)){
+            return {
+                status: 400,
+                header: 'Content-Type: application/json',
+                body: JSON.stringify({ message: 'request body is not valid' }),
             }
         }
         const userKeys = Object.keys(userProps) as Array<keyof User>;
@@ -94,6 +105,14 @@ export const ACTIONS: { [fn: string]: Function } = {
                 status: 400,
                 header: 'Content-Type: application/json',
                 body: JSON.stringify({ message: 'wrong request' }),
+            }
+        }
+
+        if(!isObject(user)){
+            return {
+                status: 400,
+                header: 'Content-Type: application/json',
+                body: JSON.stringify({ message: 'wrong request body' }),
             }
         }
 
