@@ -49,7 +49,6 @@ const router = (path, method, data) => {
         };
     }
     else {
-        console.log(action);
         return action(...signature.map(i => {
             if (i === 'id')
                 return params;

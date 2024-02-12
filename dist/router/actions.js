@@ -28,7 +28,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ACTIONS = void 0;
 const uuid = __importStar(require("uuid"));
-const userStorage_1 = __importDefault(require("../userStorage"));
+const userStorage_1 = __importDefault(require("../storage/userStorage"));
 const isUUID_1 = require("../utils/isUUID");
 const isNumber_1 = require("../utils/isNumber");
 const isString_1 = require("../utils/isString");
@@ -93,8 +93,8 @@ exports.ACTIONS = {
                 body: JSON.stringify({ message: 'request body fields do not match types' }),
             };
         }
-        const isOperationSucced = await userStorage_1.default.updateUserById(id, userProps);
-        if (!isOperationSucced) {
+        const user = await userStorage_1.default.updateUserById(id, userProps);
+        if (!user) {
             return {
                 status: 404,
                 header: 'Content-Type: application/json',
@@ -103,14 +103,13 @@ exports.ACTIONS = {
         }
         else {
             return {
-                status: 204,
+                status: 200,
                 header: 'Content-Type: application/json',
-                body: JSON.stringify({ message: `user with id ${id} removed successfully` }),
+                body: JSON.stringify(user),
             };
         }
     },
     'addUser': async (user) => {
-        console.log(user);
         try {
             user = JSON.parse(user);
         }
@@ -121,7 +120,6 @@ exports.ACTIONS = {
                 body: JSON.stringify({ message: 'wrong request' }),
             };
         }
-        console.log(user);
         if (!("username" in user) || !("age" in user) || !("hobbies" in user)) {
             return {
                 status: 400,

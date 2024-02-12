@@ -95,7 +95,7 @@ export const startMultiServer = () => {
                     data += chunk.toString();
                 });
                 res.on('end', () => {
-                    console.log('end');
+                    // console.log('end');
                 });
             });
 

@@ -1,5 +1,5 @@
 import * as uuid from 'uuid';
-import userStorage from '../userStorage';
+import userStorage from '../storage/userStorage';
 import { User } from '../types';
 import { isUUID } from '../utils/isUUID';
 import { isNumber } from '../utils/isNumber';
@@ -69,23 +69,23 @@ export const ACTIONS: { [fn: string]: Function } = {
             }
         }
 
-        const isOperationSucced: boolean | User = await userStorage.updateUserById(id as string, userProps as Partial<User>)
-        if (!isOperationSucced) {
+        const user: boolean | User = await userStorage.updateUserById(id as string, userProps as Partial<User>)
+        if (!user) {
             return {
                 status: 404,
                 header: 'Content-Type: application/json',
                 body: JSON.stringify({ message: `record with id ${id} doesn't exist` }),
             }
         } else {
+            
             return {
-                status: 204,
+                status: 200,
                 header: 'Content-Type: application/json',
-                body: JSON.stringify({ message: `user with id ${id} removed successfully` }),
+                body: JSON.stringify(user),
             }
         }
     },
     'addUser': async (user: any) => {
-        console.log(user);
         try {
             user = JSON.parse(user);
         }
@@ -96,7 +96,6 @@ export const ACTIONS: { [fn: string]: Function } = {
                 body: JSON.stringify({ message: 'wrong request' }),
             }
         }
-        console.log(user);
 
         if (!("username" in user) || !("age" in user) || !("hobbies" in user)) {
             return {

@@ -26,7 +26,6 @@ export const router = (path: string | undefined, method: string | undefined, dat
             body: JSON.stringify({ error: 'Not Found' }),
         };
     } else {
-        console.log(action);
         return action(...signature.map(i => {
            if(i === 'id') return params;
            if(i === 'data') return data;
